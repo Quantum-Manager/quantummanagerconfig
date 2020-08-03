@@ -58,6 +58,13 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
      */
     protected $autoloadLanguage = true;
 
+
+    /**
+     * List of allowed list extensions
+     *
+     * @var string[][]
+     * @since version
+     */
     protected $elements = [
         [
             'type' => 'component',
