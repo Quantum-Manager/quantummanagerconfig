@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
+    let element = '';
     let inputFileAll = document.querySelectorAll("input[name=importjson]");
 
     document.querySelector('.btn-import').addEventListener('click', function(e) {
         e.preventDefault();
+        element = this.getAttribute('data-element');
         document.querySelector('input[name=importjson]').click();
         return false;
     });
@@ -34,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         let fd = new FormData();
         fd.append("params", file);
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', '/index.php?option=com_ajax&plugin=quantummanagerconfig&group=system&task=import&format=json', true);
+        xhr.open('POST', '/index.php?option=com_ajax&plugin=quantummanagerconfig&group=system&task=import&element=' + element + '&format=json', true);
 
         xhr.upload.onprogress = function(e) {
             if (e.lengthComputable) {

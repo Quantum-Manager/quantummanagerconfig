@@ -58,7 +58,25 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
      */
     protected $autoloadLanguage = true;
 
+    protected $elements = [
+        [
+            'type' => 'component',
+            'element' => 'com_quantummanager',
+        ],
+        [
+            'type' => 'plugin',
+            'element' => 'quantummanagerbutton',
+        ]
+    ];
 
+
+    /**
+     * @param Form $form
+     * @param $data
+     *
+     *
+     * @since version
+     */
     public function onContentPrepareForm(Form $form, $data)
     {
         $admin = $this->app->isClient('administrator');
@@ -68,12 +86,76 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
             return;
         }
 
-
+        $element = '';
+        $find = false;
         $option = $this->app->input->get('option');
-        $view = $this->app->input->get('view');
-        $component = $this->app->input->get('component');
 
-        if($option !== 'com_config' || $view !== 'component' || $component !== 'com_quantummanager')
+
+        if($option === 'com_config')
+        {
+            $view = $this->app->input->get('view');
+            $component = $this->app->input->get('component');
+            $components = [];
+
+            foreach ($this->elements as $element)
+            {
+                if($element['type'] === 'component')
+                {
+                    $components[] = $element['element'];
+                }
+            }
+
+            if($view === 'component' && in_array($component, $components))
+            {
+                $element = $component;
+                $find = true;
+            }
+
+        }
+
+        if($option === 'com_plugins')
+        {
+            $view = $this->app->input->get('view');
+
+            if($view !== 'plugin')
+            {
+                return;
+            }
+
+
+            $extension_id = $this->app->input->getInt('extension_id');
+            $plugins = [];
+            $plugin = '';
+
+            $table = Table::getInstance('extension');
+            $table->load($extension_id);
+
+            if(!empty($table->element))
+            {
+                $plugin = $table->element;
+            }
+            else
+            {
+                return;
+            }
+
+            foreach ($this->elements as $element)
+            {
+                if($element['type'] === 'plugin')
+                {
+                    $plugins[] = $element['element'];
+                }
+            }
+
+            if(in_array($plugin, $plugins))
+            {
+                $element = $plugin;
+                $find = true;
+            }
+
+        }
+
+        if(!$find)
         {
             return;
         }
@@ -92,7 +174,8 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
                 'plugin' => 'quantummanagerconfig',
                 'group' => 'system',
                 'format' => 'raw',
-                'task' => 'export'
+                'task' => 'export',
+                'element' => $element
             ]);
 
         $button = '<a href="' . $url . '" class="btn btn-small">'
@@ -101,7 +184,7 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
         $toolbar->appendButton('Custom', $button, 'generate');
 
 
-        $button = '<input type="file" name="importjson" style="display: none"><button class="btn btn-small btn-import">'
+        $button = '<input type="file" name="importjson" style="display: none"><button data-element="' . $element . '" class="btn btn-small btn-import">'
             . '<span class="icon-upload" aria-hidden="true"></span>'
             . Text::_('PLG_QUANTUMMANAGERCONFIG_BUTTON_IMPORT') . '</button>';
         $toolbar->appendButton('Custom', $button, 'generate');
@@ -126,6 +209,26 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
     }
 
 
+    private function checkElement($element_check)
+    {
+        $find = false;
+
+        foreach ($this->elements as $element)
+        {
+            if($element['element'] === $element_check)
+            {
+                $find = true;
+            }
+        }
+
+        if(!$find)
+        {
+            $this->app->close(401);
+        }
+
+    }
+
+
     /**
      * Export params com_quantummanager
      *
@@ -135,9 +238,15 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
     {
         $app = Factory::getApplication();
         $input = $this->app->input;
+        $element = $this->app->input->get('element');
 
-        $params = ComponentHelper::getParams('com_quantummanager');
-        $file = 'export.json';
+        $this->checkElement($element);
+
+        $table = Table::getInstance('extension');
+        $table->load(['element' => $element]);
+
+        $params = new Registry($table->params);
+        $file = 'export_' . $element . '.json';
 
         $this->app->setHeader('Content-Disposition', 'attachment; filename=' . basename($file));
         $this->app->setHeader('Content-Transfer-Encoding', 'binary');
@@ -165,19 +274,20 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
     {
         $input = $this->app->input;
         $files = $input->files->getArray();
+        $element = $this->app->input->get('element');
+
+        $this->checkElement($element);
 
         if(isset($files['params']))
         {
 
             if($files['params']['error'] === 0)
             {
-                $params_new = file_get_contents($files['params']['tmp_name']);
-                $params = ComponentHelper::getParams('com_quantummanager');
-                $params->merge(new Registry($params_new));
-
-                $componentid = ComponentHelper::getComponent('com_quantummanager')->id;
                 $table = Table::getInstance('extension');
-                $table->load($componentid);
+                $table->load(['element' => $element]);
+                $params_new = file_get_contents($files['params']['tmp_name']);
+                $params = new Registry($table->params);
+                $params->merge(new Registry($params_new));
                 $table->bind(['params' => $params->toString()]);
 
                 if (!$table->check())
