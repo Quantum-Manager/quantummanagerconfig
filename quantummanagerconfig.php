@@ -68,11 +68,15 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
     protected $elements = [
         [
             'type' => 'component',
-            'element' => 'com_quantummanager',
+            'element' => 'com_quantummanager'
         ],
         [
             'type' => 'plugin',
-            'element' => 'quantummanagerbutton',
+            'element' => 'quantummanagerbutton'
+        ],
+        [
+            'type' => 'plugin',
+            'element' => 'quantummanagermedia'
         ]
     ];
 
