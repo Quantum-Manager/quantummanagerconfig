@@ -20,7 +20,6 @@
     </languages>
 
     <media folder="media" destination="plg_system_quantummanagerconfig">
-        <folder>css</folder>
         <folder>js</folder>
     </media>
 

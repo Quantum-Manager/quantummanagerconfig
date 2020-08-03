@@ -165,14 +165,11 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
         $input = $this->app->input;
         $files = $input->files->getArray();
 
-        //проверяем загружен ли файл
         if(isset($files['params']))
         {
 
-            //проверяем загружен ли файл с ошибками
             if($files['params']['error'] === 0)
             {
-                //достаем все новые значения полей сабформы
                 $params_new = file_get_contents($files['params']['tmp_name']);
                 $params = ComponentHelper::getParams('com_quantummanager');
                 $params->merge(new Registry($params_new));
