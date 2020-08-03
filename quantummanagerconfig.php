@@ -192,8 +192,21 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
     }
 
 
+    /**
+     * Ajax for import/export
+     *
+     * @throws Exception
+     * @since version
+     */
     public function onAjaxQuantummanagerconfig()
     {
+        $admin = $this->app->isClient('administrator');
+
+        if(!$admin)
+        {
+            return;
+        }
+
         $task = $this->app->input->get('task');
 
         if($task === 'export')
@@ -209,6 +222,14 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
     }
 
 
+    /**
+     * Check element from list
+     *
+     * @param $element_check
+     *
+     *
+     * @since version
+     */
     private function checkElement($element_check)
     {
         $find = false;
