@@ -83,6 +83,7 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
             'relative' => true
         ]);
 
+
         $toolbar = Toolbar::getInstance('toolbar');
 
         $root = Uri::getInstance()->toString(array('scheme', 'host', 'port'));
@@ -100,9 +101,9 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
         $toolbar->appendButton('Custom', $button, 'generate');
 
 
-        $button = '<input type="file" name="importjson" style="display: none"><a href="' . $url . '" class="btn btn-small btn-import">'
+        $button = '<input type="file" name="importjson" style="display: none"><button class="btn btn-small btn-import">'
             . '<span class="icon-upload" aria-hidden="true"></span>'
-            . Text::_('PLG_QUANTUMMANAGERCONFIG_BUTTON_IMPORT') . '</a>';
+            . Text::_('PLG_QUANTUMMANAGERCONFIG_BUTTON_IMPORT') . '</button>';
         $toolbar->appendButton('Custom', $button, 'generate');
 
     }
