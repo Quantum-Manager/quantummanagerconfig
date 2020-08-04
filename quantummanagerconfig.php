@@ -318,6 +318,13 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
                 $table = Table::getInstance('extension');
                 $table->load(['element' => $element]);
                 $params_new = file_get_contents($files['params']['tmp_name']);
+
+                if(!is_array(json_decode($params_new, JSON_OBJECT_AS_ARRAY)))
+                {
+                    $this->app->enqueueMessage('PLG_QUANTUMMANAGERCONFIG_IMPORTEXPORT_ERROR_FILE_UPLOAD', 'error');
+                    return;
+                }
+
                 $params = new Registry($table->params);
                 $params->merge(new Registry($params_new));
                 $table->bind(['params' => $params->toString()]);
@@ -325,11 +332,13 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
                 if (!$table->check())
                 {
                     $this->app->enqueueMessage('PLG_QUANTUMMANAGERCONFIG_IMPORTEXPORT_ERROR_DATABASE', 'error');
+                    return;
                 }
 
                 if (!$table->store())
                 {
                     $this->app->enqueueMessage('PLG_QUANTUMMANAGERCONFIG_IMPORTEXPORT_ERROR_DATABASE', 'error');
+                    return;
                 }
 
                 JLoader::register('QuantummanagerHelper', JPATH_SITE . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
