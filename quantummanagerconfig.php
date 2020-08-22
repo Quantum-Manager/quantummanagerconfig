@@ -312,6 +312,7 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
 
         $this->checkElement($element);
 
+
         if(isset($files['params']))
         {
 
