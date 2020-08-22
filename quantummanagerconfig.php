@@ -189,16 +189,18 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
                 'element' => $element
             ]);
 
+        Factory::getDocument()->addStyleDeclaration('#toolbar-quantum-config-button-position{float:right}');
+
         $button = '<a href="' . $url . '" class="btn btn-small">'
             . '<span class="icon-download" aria-hidden="true"></span>'
             . Text::_('PLG_QUANTUMMANAGERCONFIG_BUTTON_EXPORT') . '</a>';
-        $toolbar->appendButton('Custom', $button, 'generate');
+        $toolbar->appendButton('Custom', $button, 'quantum-config-button-position');
 
 
         $button = '<input type="file" name="importjson" style="display: none"><button data-element="' . $element . '" class="btn btn-small btn-import">'
             . '<span class="icon-upload" aria-hidden="true"></span>'
             . Text::_('PLG_QUANTUMMANAGERCONFIG_BUTTON_IMPORT') . '</button>';
-        $toolbar->appendButton('Custom', $button, 'generate');
+        $toolbar->appendButton('Custom', $button, 'quantum-config-button-position');
 
     }
 
