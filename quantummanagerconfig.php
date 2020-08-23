@@ -190,6 +190,7 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
             ]);
 
         Factory::getDocument()->addStyleDeclaration('#toolbar-quantum-config-button-position{float:right}');
+        Factory::getDocument()->addScriptDeclaration("window.QuantummanagerConfig = {alert: '" . htmlspecialchars(Text::_('PLG_QUANTUMMANAGERCONFIG_ALERT'), ENT_QUOTES) . "'}");
 
         $button = '<a href="' . $url . '" class="btn btn-small">'
             . '<span class="icon-download" aria-hidden="true"></span>'

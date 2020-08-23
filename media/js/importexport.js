@@ -5,6 +5,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     document.querySelector('.btn-import').addEventListener('click', function(e) {
         e.preventDefault();
+        let confirm_config = confirm(window.QuantummanagerConfig.alert);
+
+        if(!confirm_config) {
+            return;
+        }
+
         element = this.getAttribute('data-element');
         document.querySelector('input[name=importjson]').click();
         return false;
