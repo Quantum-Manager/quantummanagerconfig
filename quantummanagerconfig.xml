@@ -2,7 +2,7 @@
 <extension version="3.8" type="plugin" group="system" method="upgrade">
     <name>PLG_QUANTUMMANAGERCONFIG</name>
     <creationDate>3.08.2020</creationDate>
-    <version>1.0</version>
+    <version>1.1</version>
     <author>Tsymbal</author>
     <authorEmail>cymbal@delo-design.ru</authorEmail>
     <authorUrl>https://www.norrnext.com</authorUrl>
