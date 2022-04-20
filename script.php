@@ -29,7 +29,7 @@ class plgSystemQuantummanagerconfigInstallerScript
      *
      * @return  boolean  True on success
      */
-    public function postflight($route, JAdapterInstance $adapter) {
+    public function postflight($route, $adapter) {
         $db = Factory::getDbo();
         $query = $db->getQuery( true );
         $query->update( '#__extensions' )
