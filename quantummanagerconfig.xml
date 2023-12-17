@@ -9,7 +9,7 @@
     <copyright>Copyright © 2019 Delo Design &amp; NorrNext. All rights reserved.</copyright>
     <license>GNU General Public License version 3 or later; see license.txt</license>
     <description>PLG_QUANTUMMANAGERCONFIG_XML_DESCRIPTION</description>
-
+    <namespace path="src">Joomla\Plugin\System\QuantumManagerConfig</namespace>
     <scriptfile>script.php</scriptfile>
 
     <languages folder="language">
@@ -24,7 +24,8 @@
     </media>
 
     <files>
-        <filename plugin="quantummanagerconfig">quantummanagerconfig.php</filename>
+        <folder plugin="quantummanagerconfig">src</folder>
+        <folder>services</folder>
         <folder>language</folder>
     </files>
 

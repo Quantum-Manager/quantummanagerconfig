@@ -1,4 +1,5 @@
-<?php
+<?php namespace Joomla\Plugin\System\QuantumManagerConfig\Extension;
+
 /**
  * @package    quantummanager
  *
@@ -8,8 +9,8 @@
  * @link       https://www.norrnext.com
  */
 
+use Exception;
 use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -18,6 +19,7 @@ use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Component\QuantumManager\Administrator\Helper\QuantummanagerHelper;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 
@@ -29,7 +31,7 @@ defined('_JEXEC') or die;
  * @package   quantumyoothemepro
  * @since     1.0.0
  */
-class plgSystemQuantummanagerconfig extends CMSPlugin
+class QuantumManagerConfig extends CMSPlugin
 {
 
     /**
@@ -345,7 +347,6 @@ class plgSystemQuantummanagerconfig extends CMSPlugin
                     return;
                 }
 
-                JLoader::register('QuantummanagerHelper', JPATH_SITE . '/administrator/components/com_quantummanager/helpers/quantummanager.php');
                 QuantummanagerHelper::cleanCache('_system', 0);
                 QuantummanagerHelper::cleanCache('_system', 1);
 
